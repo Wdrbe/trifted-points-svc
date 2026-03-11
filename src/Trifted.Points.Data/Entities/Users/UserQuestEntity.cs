@@ -2,28 +2,29 @@ using Amazon.DynamoDBv2.DataModel;
 using Kanject.Core.NoSqlDatabase.Provider.DynamoDb.Annotations.Attributes;
 using Trifted.Points.Data.Enums;
 
-namespace Trifted.Points.Data.Entities.UserQuests;
+namespace Trifted.Points.Data.Entities.Users;
 
-public record UserPointEntity : AbstractBaseEntity
+public record UserQuestEntity : AbstractBaseEntity
 {
     [KeyTemplate("TriftedUserEntity#{UserId}")]
     [DynamoDBHashKey("pk")]
     public override string PartitionKey { get; set; } = string.Empty;
 
-    [KeyTemplate("UserProfile#Users#{UserId}")]
+    [KeyTemplate("Quests#{QuestId}")]
     [DynamoDBRangeKey("sk")]
     public override string SortKey { get; set; } = string.Empty;
 
-    [KeyTemplate("QuestPosts")]
+    [KeyTemplate("UserQuests")]
     [DynamoDBGlobalSecondaryIndexHashKey]
     public override string Gsi1Pk { get; set; } = string.Empty;
 
-    [KeyTemplate("Points#{Points}#{UserId}#{Id}")]
+    [KeyTemplate("Quests#{QuestId}#{Points}#{Id}")]
     [DynamoDBGlobalSecondaryIndexRangeKey]
     public override string Gsi1Sk { get; set; } = string.Empty;
 
     [DynamoDBProperty] public Guid UserId { get; set; }
+    [DynamoDBProperty] public Guid QuestId { get; set; }
     [DynamoDBProperty] public int Points { get; set; }
 
-    [DynamoDBProperty("Et")] public override EntityType EntityType { get; set; } = EntityType.UserPoint;
+    [DynamoDBProperty("Et")] public override EntityType EntityType { get; set; } = EntityType.UserQuest;
 }

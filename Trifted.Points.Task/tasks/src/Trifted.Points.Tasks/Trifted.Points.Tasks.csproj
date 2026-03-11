@@ -70,9 +70,9 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\..\trifted-core\Trifted.Core\Trifted.Core.csproj" />
+      <ProjectReference Include="..\..\..\..\src\Trifted.Points.Business\Trifted.Points.Business.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Consumers\" />
       <Folder Include="RouteConsumers\" />
     </ItemGroup>
 </Project>

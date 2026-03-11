@@ -58,4 +58,7 @@
       <ProjectReference Include="..\Trifted.Points.Business\Trifted.Points.Business.csproj" />
       <ProjectReference Include="..\Trifted.Points.Common\Trifted.Points.Common.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Controllers\Admin\" />
+    </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 using Amazon.DynamoDBv2.DataModel;
 using Kanject.Core.NoSqlDatabase.Provider.DynamoDb.Annotations.Attributes;
 
-namespace Trifted.Points.Data.Entities.UserQuests;
+namespace Trifted.Points.Data.Entities.Users;
 
 public record UserProfileEntity : AbstractBaseEntity
 {

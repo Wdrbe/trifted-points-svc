@@ -2,7 +2,7 @@ using Amazon.DynamoDBv2;
 using Kanject.Core.NoSqlDatabase.Provider.DynamoDb.Abstractions.DataContext.EntityBuilder;
 using Kanject.Core.NoSqlDatabase.Provider.DynamoDb.Annotations.Attributes;
 using Trifted.Points.Data.Entities;
-using Trifted.Points.Data.Entities.UserQuests;
+using Trifted.Points.Data.Entities.Users;
 using Trifted.Points.Data.Entities.WdrbeQuest;
 
 namespace Trifted.Points.Data.DbContexts;
@@ -22,9 +22,11 @@ public partial class TriftedPointsDbContext
             option.AddGsi2Index(hashKeyType: ScalarAttributeType.S, rangeKeyType: ScalarAttributeType.S);
         });
 
+        builder.MapEntity<UserProfileEntity>();
         builder.MapEntity<UserPointEntity>();
         builder.MapEntity<UserQuestEntity>();
 
         builder.MapEntity<WdrbeQuestEntity>();
+        builder.MapEntity<WdrbeQuestTaskEntity>();
     }
 }

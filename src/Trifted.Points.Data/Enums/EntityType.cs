@@ -4,5 +4,6 @@ public enum EntityType
 {
     WdrbeQuest,
     UserPoint,
-    UserQuest
+    UserQuest,
+    WdrbeQuestTask
 }

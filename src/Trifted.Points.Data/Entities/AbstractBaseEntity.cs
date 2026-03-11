@@ -3,6 +3,8 @@ using Kanject.Core.Audit.Interfaces;
 using Kanject.Core.Audit.Models;
 using Kanject.Core.NoSqlDatabase.Provider.DynamoDb.Abstractions.Interfaces;
 using Kanject.Core.NoSqlDatabase.Provider.DynamoDb.Annotations.Attributes;
+using Trifted.Points.Data.Entities.Users;
+using Trifted.Points.Data.Entities.WdrbeQuest;
 using Trifted.Points.Data.Enums;
 
 namespace Trifted.Points.Data.Entities;
@@ -14,7 +16,11 @@ namespace Trifted.Points.Data.Entities;
 /// partition keys, sort keys, and versioning for concurrent updates.
 /// </summary>
 [DynamoDbGsi(Name = "Gsi1Index")]
+[DynamoDbGsiAlias<UserPointEntity>(name: "Gsi1Index")]
+[DynamoDbGsiAlias<WdrbeQuestEntity>(name: "Gsi1Index")]
 [DynamoDbGsi(Name = "Gsi2Index")]
+[DynamoDbGsiAlias<UserQuestEntity>(name: "Gsi2Index")]
+[DynamoDbGsiAlias<WdrbeQuestEntity>(name: "Gsi2Index")]
 public partial record AbstractBaseEntity : IDynamoDbEntity, IAuditEntity
 {
     /// <summary>

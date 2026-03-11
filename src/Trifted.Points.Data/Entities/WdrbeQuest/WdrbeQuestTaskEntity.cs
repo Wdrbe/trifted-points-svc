@@ -5,13 +5,13 @@ using Trifted.Points.Data.Enums;
 
 namespace Trifted.Points.Data.Entities.WdrbeQuest;
 
-public record WdrbeQuestEntity : AbstractBaseEntity
+public record WdrbeQuestTaskEntity : AbstractBaseEntity
 {
-    [KeyTemplate("WdrbeQuest#{Id}")]
+    [KeyTemplate("WdrbeQuest#{QuestId}")]
     [DynamoDBHashKey("pk")]
     public override string PartitionKey { get; set; } = string.Empty;
 
-    [KeyTemplate("Info")]
+    [KeyTemplate("Tasks#{Id}")]
     [DynamoDBRangeKey("sk")]
     public override string SortKey { get; set; } = string.Empty;
 
@@ -47,21 +47,16 @@ public record WdrbeQuestEntity : AbstractBaseEntity
     [DynamoDBGlobalSecondaryIndexRangeKey]
     public override string Gsi1Sk { get; set; } = string.Empty;
 
-    [DynamoDBProperty] public Guid? CountryId { get; set; }
-
-    [Unique("QuestName")]
+    [CompositeUnique("UniqueQuest")]
+    [Collection(name: "QuestEventTopic")]
     [DynamoDBProperty]
-    public string Name { get; set; } = string.Empty;
+    public string EventTopic { get; set; } = string.Empty;
 
-    [DynamoDBProperty] public int PointPerAction { get; set; }
+    [DynamoDBProperty] public Guid QuestId { get; set; }
 
-    [DynamoDBProperty] public int MaxAction { get; set; }
-
-    [DynamoDBProperty] public int Points { get; set; }
+    [DynamoDBProperty] public Guid? CountryId { get; set; }
 
     [DynamoDBProperty] public string UserIdentifier { get; set; } = string.Empty;
 
-    [DynamoDBProperty("LastUpdatedOn")] public string LastUpdatedOn { get; set; } = string.Empty;
-
-    [DynamoDBProperty("Et")] public override EntityType EntityType { get; set; } = EntityType.WdrbeQuest;
+    [DynamoDBProperty("Et")] public override EntityType EntityType { get; set; } = EntityType.WdrbeQuestTask;
 }

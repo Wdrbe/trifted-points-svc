@@ -1,13 +1,17 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
 using Kanject.Core.CacheDb.Provider.DynamoDb.Extensions;
+using Kanject.Core.NoSqlDatabase.Provider.DynamoDbV2.Extensions;
 using Kanject.Core.UtilityServices.Extensions;
+using Kanject.Identity.Provider.AwsCognito.Abstractions.Config;
+using Kanject.Identity.Provider.AwsCognitoV3.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi;
 using Trifted.Core.Common.Configuration;
 using Trifted.Points.Api.Components.Filters;
 using Trifted.Points.Api.Configurations;
 using Trifted.Points.Common.Constants;
+using Trifted.Points.Data.DbContexts;
 
 namespace Trifted.Points.Api;
 
@@ -93,6 +97,49 @@ public class Startup
             options.EnableDebugLogging();
 #endif
         });
+
+        services.AddDbContext<TriftedPointsDbContext>(options =>
+        {
+            options.TableName = AppConstants.TableSchemaName;
+            options.Namespace = _appSettings.DatabaseNamespace;
+            options.SecretKey = _appSettings.AwsAccessSecretKey;
+            options.AccessKey = _appSettings.AwsAccessKeyId;
+            options.AwsRegion = _appSettings.AwsRegion;
+            options.EnableQueryTranspilation = true;
+
+#if DEBUG
+            options.EnableDbMigration();
+            options.EnableDebugLogging();
+#endif
+        });
+
+        services.AddCognitoIdentityProviderSettings(options =>
+        {
+            var awsCognitoConfiguration =
+                Configuration.GetSection("CognitoIdentityProviderSettings").Get<AwsCognitoConfiguration>()
+                ?? throw new Exception("'CognitoIdentityProviderSettings' is required");
+
+            options.AccessKeyId = _appSettings.AwsAccessKeyId;
+            options.AccessSecretKey = _appSettings.AwsAccessSecretKey;
+            options.Region = awsCognitoConfiguration.Region;
+            options.ClientId = awsCognitoConfiguration.ClientId;
+            options.UserPoolId = awsCognitoConfiguration.UserPoolId;
+            options.ServiceClientId = awsCognitoConfiguration.ServiceClientId;
+            options.ServiceClientSecret = awsCognitoConfiguration.ServiceClientSecret;
+            options.AuthenticationUrl = awsCognitoConfiguration.AuthenticationUrl;
+            options.SyncPermissions = awsCognitoConfiguration.SyncPermissions;
+
+            options.IdentityStoreNamespace = _appSettings.DatabaseNamespace;
+            options.ApplicationIdentitySchema = awsCognitoConfiguration.ApplicationIdentitySchema;
+            options.UserPartitionKey = awsCognitoConfiguration.UserPartitionKey;
+
+            // services.AddAuthorizationServerWithPermissions(option =>
+            // {
+            //     option.RegisterDefaultClientPolicies();
+            //     option.RegisterDefaultUserGroupPolicies();
+            // });
+        });
+
 
         services.AddBusinessServices(); //Registers all business services dependencies
 
