@@ -1,0 +1,63 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "An AWS Serverless Application. This template is partially managed by Amazon.Lambda.Annotations (v1.2.0.0).",
+  "Resources": {
+    "SampleSqsTaskFunc": {
+      "Type": "AWS::Serverless::Function",
+      "Metadata": {
+        "Tool": "Amazon.Lambda.Annotations"
+      },
+      "Properties": {
+        "Runtime": "dotnet8",
+        "CodeUri": ".",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Architectures": [
+          "arm64"
+        ],
+        "Environment": {
+          "Variables": {
+            "ASPNETCORE_ENVIRONMENT": "Production",
+            "ASPNETCORE_LAMBDA_ENVIRONMENT": "Staging",
+            "SECRET_PARAMETER_PATHNAME": "/stage"
+          }
+        },
+        "Policies": [
+          "[insert IAM multiple policies separated with commas (",
+          ")]"
+        ],
+        "PackageType": "Zip",
+        "Handler": "Trifted.Points.Task::Trifted.Points.Task.Functions_SampleSqsTaskAsync_Generated::SampleSqsTaskAsync"
+      }
+    },
+    "SampleSqsRouteConsumerTaskFunc": {
+      "Type": "AWS::Serverless::Function",
+      "Metadata": {
+        "Tool": "Amazon.Lambda.Annotations"
+      },
+      "Properties": {
+        "Runtime": "dotnet8",
+        "CodeUri": ".",
+        "MemorySize": 1024,
+        "Timeout": 30,
+        "Architectures": [
+          "arm64"
+        ],
+        "Environment": {
+          "Variables": {
+            "ASPNETCORE_ENVIRONMENT": "Production",
+            "ASPNETCORE_LAMBDA_ENVIRONMENT": "Staging",
+            "SECRET_PARAMETER_PATHNAME": "/stage"
+          }
+        },
+        "Policies": [
+          "[insert IAM multiple policies separated with commas (",
+          ")]"
+        ],
+        "PackageType": "Zip",
+        "Handler": "Trifted.Points.Task::Trifted.Points.Task.Functions_SampleSqsTaskRouterAsync_Generated::SampleSqsTaskRouterAsync"
+      }
+    }
+  }
+}

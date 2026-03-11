@@ -1,0 +1,78 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+        <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
+        <AWSProjectType>Lambda</AWSProjectType>
+        <!-- This property makes the build directory similar to a publish directory and helps the AWS .NET Lambda Mock Test Tool find project dependencies. -->
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <!-- Generate ready to run images during publishing to improvement cold starts. -->
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <!-- Use Workstation GC - generally better for Lambda -->
+        <ServerGarbageCollection>false</ServerGarbageCollection>
+        <!-- Excludes .pdb files from published lambda functions during code build phase -->
+        <StripSymbols>true</StripSymbols>
+    </PropertyGroup>
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Amazon.Lambda.Core" Version="2.8.0"/>
+        <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.4.4"/>
+        <PackageReference Include="Amazon.Lambda.Annotations" Version="1.8.0"/>
+        <PackageReference Include="Kanject.Core.CloudFunction.Provider.AwsLambda" Version="3.1.4"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Update="appsettings.json">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="appsettings.Development.json">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="appsettings.Development.gb.json">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="appsettings.Production.json">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+        <Content Update="appsettings.Staging.json">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="appsettings.json">
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
+        <None Update="appsettings.Development.json">
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
+        <None Update="appsettings.Production.json">
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
+        <None Update="appsettings.Staging.json">
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\..\trifted-core\Trifted.Core\Trifted.Core.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Consumers\" />
+      <Folder Include="RouteConsumers\" />
+    </ItemGroup>
+</Project>
