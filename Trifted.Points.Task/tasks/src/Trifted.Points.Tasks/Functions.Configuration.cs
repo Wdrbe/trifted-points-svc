@@ -3,7 +3,7 @@ using Kanject.Core.Queue.Provider.AwsSqs.Abstractions.Extensions;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
-namespace Trifted.Points.Task;
+namespace Trifted.Points.Tasks;
 
 /// <summary>
 /// A collection of sample Lambda functions that provide a REST api for doing simple math calculations. 

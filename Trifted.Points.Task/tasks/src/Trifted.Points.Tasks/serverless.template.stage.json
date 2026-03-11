@@ -29,7 +29,7 @@
         "ImageUri": ".",
         "ImageConfig": {
           "Command": [
-            "Trifted.Points.Task::Trifted.Points.Task.Functions_SampleSqsTaskAsync_Generated::SampleSqsTaskAsync"
+            "Trifted.Points.Tasks::Trifted.Points.Tasks.Functions_SampleSqsTaskAsync_Generated::SampleSqsTaskAsync"
           ]
         }
       }
@@ -60,7 +60,7 @@
         "ImageUri": ".",
         "ImageConfig": {
           "Command": [
-            "Trifted.Points.Task::Trifted.Points.Task.Functions_SampleSqsTaskRouterAsync_Generated::SampleSqsTaskRouterAsync"
+            "Trifted.Points.Tasks::Trifted.Points.Tasks.Functions_SampleSqsTaskRouterAsync_Generated::SampleSqsTaskRouterAsync"
           ]
         }
       }

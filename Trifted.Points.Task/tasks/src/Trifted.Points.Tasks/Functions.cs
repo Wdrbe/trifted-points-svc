@@ -1,9 +1,9 @@
 using Amazon.Lambda.Annotations;
 using Amazon.Lambda.SQSEvents;
-using Trifted.Points.Task.Config.Aws;
 using Kanject.Core.Queue.Provider.AwsSqs.Abstractions.Extensions;
+using Trifted.Points.Tasks.Config.Aws;
 
-namespace Trifted.Points.Task;
+namespace Trifted.Points.Tasks;
 
 /// <summary>
 /// A collection of Lambda functions designed to handle Kanject.Aws.Lambda background running tasks 

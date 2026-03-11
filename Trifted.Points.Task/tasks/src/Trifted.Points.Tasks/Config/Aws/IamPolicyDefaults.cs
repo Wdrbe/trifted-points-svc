@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Kanject 2023
 // Author:  Omogbolahan Akinsanya
 
-namespace Trifted.Points.Task.Config.Aws;
+namespace Trifted.Points.Tasks.Config.Aws;
 
 public static class IamPolicyDefaults
 {

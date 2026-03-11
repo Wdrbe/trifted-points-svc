@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Trifted.Points.Task.Config.Models;
+namespace Trifted.Points.Tasks.Config.Models;
 
 public class AppSettings
 {
