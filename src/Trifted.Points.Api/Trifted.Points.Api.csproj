@@ -22,7 +22,7 @@
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <WarningLevel>4</WarningLevel>
-        <DocumentationFile>bin\Debug\net6.0\Trifted.Points.Api.xml</DocumentationFile>
+        <DocumentationFile>.\Trifted.Points.Api.xml</DocumentationFile>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.0"/>
@@ -60,5 +60,10 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Controllers\Admin\" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Update="Trifted.Points.Api.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

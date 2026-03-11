@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Trifted.Points.Api</name>
+    </assembly>
+    <members>
+        <member name="T:Trifted.Points.Api.Components.Filters.EnumSchemaFilter">
+            <summary>
+                EnumSchemaFilter
+            </summary>
+        </member>
+        <member name="M:Trifted.Points.Api.Components.Filters.EnumSchemaFilter.Apply(Microsoft.OpenApi.IOpenApiSchema,Swashbuckle.AspNetCore.SwaggerGen.SchemaFilterContext)">
+            <summary>
+                Apply
+            </summary>
+            <param name="model"></param>
+            <param name="context"></param>
+        </member>
+        <member name="T:Trifted.Points.Api.Configurations.AppCorsSettingsManagerExtensions">
+            <summary>
+                AppCorsSettingsManagerExtensions
+            </summary>
+        </member>
+        <member name="M:Trifted.Points.Api.Configurations.AppCorsSettingsManagerExtensions.UseDefaultAppCors(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+                UseDefaultAppCors
+            </summary>
+            <param name="app"></param>
+            <param name="configuration"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Trifted.Points.Api.Configurations.AppServicesManagerExtensions">
+            <summary>
+                Register's default LegalMate App Services
+            </summary>
+        </member>
+        <member name="M:Trifted.Points.Api.Configurations.AppServicesManagerExtensions.AddBusinessServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+                AddBusinessServices
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Trifted.Points.Api.Configurations.AppSettingsManagerExtensions">
+            <summary>
+                AppSettingsManagerExtensions
+            </summary>
+        </member>
+        <member name="M:Trifted.Points.Api.Configurations.AppSettingsManagerExtensions.AddDefaultAppSettings(Microsoft.Extensions.Configuration.IConfigurationBuilder,System.String)">
+            <summary>
+                AddDefaultAppSettings
+            </summary>
+            <param name="configurationBuilder"></param>
+            <param name="environmentName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Trifted.Points.Api.Constants.AppConstants">
+            <summary>
+                AppConstants
+            </summary>
+        </member>
+        <member name="F:Trifted.Points.Api.Constants.AppConstants.ASPNETCORE_LAMBDA_ENVIRONMENT">
+            <summary>
+                ASPNETCORE_LAMBDA_ENVIRONMENT
+            </summary>
+        </member>
+        <member name="T:Trifted.Points.Api.Controllers.ValuesController">
+            <summary>
+                ValuesController
+            </summary>
+        </member>
+        <member name="M:Trifted.Points.Api.Controllers.ValuesController.Get">
+            <summary>
+                GET api/values
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Trifted.Points.Api.Controllers.ValuesController.Get(System.Int32)">
+            <summary>
+                GET api/values/5
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Trifted.Points.Api.Controllers.ValuesController.Post(System.String)">
+            <summary>
+                POST api/values
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Trifted.Points.Api.Controllers.ValuesController.Put(System.Int32,System.String)">
+            <summary>
+                PUT api/values/5
+            </summary>
+            <param name="id"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Trifted.Points.Api.Controllers.ValuesController.Delete(System.Int32)">
+            <summary>
+                DELETE api/values/5
+            </summary>
+            <param name="id"></param>
+        </member>
+        <member name="T:Trifted.Points.Api.LambdaEntryPoint">
+            <summary>
+                This class extends from APIGatewayProxyFunction which contains the method FunctionHandlerAsync which is the
+                actual Lambda function entry point. The Lambda handler field should be set to
+                Trifted.Points.Api::Trifted.Points.Api.LambdaEntryPoint::FunctionHandlerAsync
+            </summary>
+        </member>
+        <member name="M:Trifted.Points.Api.LambdaEntryPoint.Init(Microsoft.AspNetCore.Hosting.IWebHostBuilder)">
+            <summary>
+                The builder has configuration, logging and Amazon API Gateway already configured. The startup class
+                needs to be configured in this method using the UseStartup method.
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="M:Trifted.Points.Api.LambdaEntryPoint.Init(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+                Use this override to customize the services registered with the IHostBuilder.
+                It is recommended not to call ConfigureWebHostDefaults to configure the IWebHostBuilder inside this method.
+                Instead customize the IWebHostBuilder in the Init(IWebHostBuilder) overload.
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="T:Trifted.Points.Api.LocalEntryPoint">
+            <summary>
+                The Main function can be used to run the ASP.NET Core application locally using the Kestrel webserver.
+            </summary>
+        </member>
+        <member name="M:Trifted.Points.Api.LocalEntryPoint.Main(System.String[])">
+            <summary>
+                Main
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:Trifted.Points.Api.LocalEntryPoint.CreateHostBuilder(System.String[])">
+            <summary>
+                CreateHostBuilder
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Trifted.Points.Api.Startup">
+            <summary>
+                Startup
+            </summary>
+        </member>
+        <member name="M:Trifted.Points.Api.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Default constructor
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:Trifted.Points.Api.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+                This method gets called by the runtime. Use this method to add services to the container
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:Trifted.Points.Api.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+                This method gets called by the runtime. Use this method to configure the HTTP request pipeline
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+        <member name="M:Microsoft.Extensions.Configuration.Binder.SourceGeneration.BindingExtensions.Get``1(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>Attempts to bind the configuration instance to a new instance of type T.</summary>
+        </member>
+        <member name="M:Microsoft.Extensions.Configuration.Binder.SourceGeneration.BindingExtensions.ValidateConfigurationKeys(System.Type,System.Lazy{System.Collections.Generic.HashSet{System.String}},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Configuration.BinderOptions)">
+            <summary>If required by the binder options, validates that there are no unknown keys in the input configuration object.</summary>
+        </member>
+    </members>
+</doc>
