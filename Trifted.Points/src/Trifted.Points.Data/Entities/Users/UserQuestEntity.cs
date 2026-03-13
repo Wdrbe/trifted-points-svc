@@ -24,6 +24,7 @@ public record UserQuestEntity : AbstractBaseEntity
 
     [DynamoDBProperty] public Guid UserId { get; set; }
     [DynamoDBProperty] public Guid QuestId { get; set; }
+    [DynamoDBProperty] public Badge Badge { get; set; }
     [DynamoDBProperty] public int Points { get; set; }
 
     [DynamoDBProperty("Et")] public override EntityType EntityType { get; set; } = EntityType.UserQuest;

@@ -6,4 +6,5 @@ public static class AppConstants
 
     public static string ServiceName => "TriftedPoints";
     public static string CacheKeyPrefix => "trifted:points";
+    public static string QueueNamespace => "trifted_points";
 }

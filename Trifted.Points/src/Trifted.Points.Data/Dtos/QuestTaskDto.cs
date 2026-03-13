@@ -12,6 +12,12 @@ public class QuestTaskDto
     /// This property is used to define or categorize the specific purpose or classification of the task.
     /// </summary>
     public string TaskName { get; set; } = string.Empty;
+    /// <summary>
+    /// Gets or sets the EventTopic associated with the request.
+    /// This property is used to define or categorize the specific EventTopic..
+    /// This property is used to define or categorize the specific EventTopic..
+    /// </summary>
+    public string EventTopic { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the CountryId associated with the request.

@@ -7,6 +7,7 @@ namespace Trifted.Points.Data.Repositories;
 [Repository(Entity = typeof(UserQuestEntity), Version = 2)]
 [DbContext(typeof(TriftedPointsDbContext))]
 [EntityRepository<UserPointEntity>]
+[EntityRepository<UserQuestTaskEntity>]
 public partial class UserQuestRepository
 {
 }

@@ -11,4 +11,5 @@ public interface IWdrbeQuestManager
     public Task<List<GetWbdrbeQuestResponse>> GetWdrbeQuestsAsync();
     public Task<WdrbeQuestEntity> ProcessUserPointAsync(Guid userId, Guid questId, Guid taskId);
     public Task<UserPointResponse> GetUsersQuestPointAsync(Guid userId);
+    public Task<GetWdrbeQuestTasksResponse?> RemoveWdrbeQuestByIdAsync(string questId);
 }

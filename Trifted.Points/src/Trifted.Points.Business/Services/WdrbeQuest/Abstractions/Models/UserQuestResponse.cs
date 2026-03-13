@@ -1,4 +1,6 @@
-﻿namespace Trifted.Points.Business.Services.WdrbeQuest.Abstractions.Models
+﻿using Trifted.Points.Data.Enums;
+
+namespace Trifted.Points.Business.Services.WdrbeQuest.Abstractions.Models
 {
     public class UserQuestResponse
     {
@@ -7,6 +9,7 @@
         public int TotalPoints { get; set; }
         public int PointsEarned { get; set; }
         public int CompletionPercentage { get; set; }
+        public Badge Badge { get; set; }
         public bool IsCompleted { get; set; }
         public List<UserQuestTaskResponse>? QuestTasks { get; set; }
     }

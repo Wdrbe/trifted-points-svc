@@ -3,6 +3,7 @@
 
 using Trifted.Points.Business.Services.WdrbeQuest;
 using Trifted.Points.Business.Services.WdrbeQuest.Abstractions.Interfaces;
+using Trifted.Points.Data.Repositories;
 
 namespace Trifted.Points.Api.Configurations;
 
@@ -20,6 +21,7 @@ public static class AppServicesManagerExtensions
     {
 
         services.AddScoped<IWdrbeQuestManagerService, WdrbeQuestManagerService>();
+        services.AddScoped<UserQuestRepository>();
         return services;
     }
 }

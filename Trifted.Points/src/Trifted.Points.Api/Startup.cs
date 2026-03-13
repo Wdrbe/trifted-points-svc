@@ -1,17 +1,28 @@
-﻿using System.Reflection;
-using System.Text.Json.Serialization;
+﻿using Kanject.Core.Adapter.Extensions;
 using Kanject.Core.CacheDb.Provider.DynamoDb.Extensions;
+using Kanject.Core.EtlTaskManager.Abstractions.Extensions;
 using Kanject.Core.NoSqlDatabase.Provider.DynamoDbV2.Extensions;
+using Kanject.Core.Queue.Provider.AwsSqs.Abstractions.Extensions;
+using Kanject.Core.Queue.Provider.AwsSqs.Extensions.Sns;
 using Kanject.Core.UtilityServices.Extensions;
 using Kanject.Identity.Provider.AwsCognito.Abstractions.Config;
 using Kanject.Identity.Provider.AwsCognitoV3.Extensions;
+using Kanject.ServerlessEventHub.Provider.AwsSns.Abstractions.Config;
+using Kanject.ServerlessEventHub.Provider.AwsSnsV4.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi;
+using System.Reflection;
+using System.Text.Json.Serialization;
 using Trifted.Core.Common.Configuration;
+using Trifted.Core.Common.Extensions;
+using Trifted.Core.Trifted.Points;
+using Trifted.Core.Trifted.Wallet;
 using Trifted.Points.Api.Components.Filters;
 using Trifted.Points.Api.Configurations;
 using Trifted.Points.Common.Constants;
+using Trifted.Core.Trifted.Identity.Queues;
 using Trifted.Points.Data.DbContexts;
+
 
 namespace Trifted.Points.Api;
 
@@ -128,12 +139,65 @@ public class Startup(IConfiguration configuration)
             options.ApplicationIdentitySchema = awsCognitoConfiguration.ApplicationIdentitySchema;
             options.UserPartitionKey = awsCognitoConfiguration.UserPartitionKey;
 
-            // services.AddAuthorizationServerWithPermissions(option =>
-            // {
-            //     option.RegisterDefaultClientPolicies();
-            //     option.RegisterDefaultUserGroupPolicies();
-            // });
+            services.AddAuthorizationServer(option =>
+            {
+                option.RegisterDefaultClientPolicies();
+                option.RegisterDefaultUserGroupPolicies();
+            });
         });
+
+        services.AddServerlessEventHubClient(
+        serviceName: TriftedPoints.ServiceName,
+        eventHubConfigurationOption: options =>
+        {
+            var configuration =
+            Configuration.GetSection("EventHubClientConfiguration")
+                .Get<AwsServerlessEventHubConfiguration>()
+            ?? throw new Exception("EventHubClientConfiguration is required");
+
+            options.AwsAccessKey = _appSettings.AwsAccessKeyId;
+            options.AwsSecretKey = _appSettings.AwsAccessSecretKey;
+            options.AwsRegionEndpoint = _appSettings.AwsRegion;
+            options.ServerlessEventHubSchemaName = configuration.ServerlessEventHubSchemaName;
+            options.ServerlessEventLogSchemaName = configuration.ServerlessEventLogSchemaName;
+            options.SyncEventTopics = configuration.SyncEventTopics;
+
+        });
+
+
+
+
+        services.AddAwsSqsGlobalQueueConfiguration(options =>
+        {
+            options.AWSAccessKey = _appSettings.AwsAccessKeyId;
+            options.AWSSecretKey = _appSettings.AwsAccessSecretKey;
+            options.AWSRegion = _appSettings.AwsRegion;
+            options.Namespace = AppConstants.QueueNamespace;
+            options.UseDeadLetterQueue = true;
+            options.DlqMessageRetentionPeriod = 14;
+            options.CreateQueueIfNotExist = _appSettings.ShouldSetupQueue;
+        })
+        .AddWdrbeQuestQueue(option =>
+        {
+            option.Namespace = _appSettings.ConversationQueueNamespace;
+            option.CreateQueueIfNotExist = false;
+            option.MaximumReceiveMessageCount = 10;
+        });
+
+
+
+        //if (_appSettings.ShouldSetupQueue)
+        //    services
+        //        .CreatePointsSvcDefaultEventQueue(options => { options.Namespace = string.Empty; })
+        //        .SubscribeMarketplaceSvcDefaultEventQueueTopics();
+
+        services.AddBusinessServices(); //Registers all business services dependencies
+
+        services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
 
         services.AddBusinessServices(); //Registers all business services dependencies
@@ -185,6 +249,19 @@ public class Startup(IConfiguration configuration)
         app.UseRouting();
 
         app.UseAuthentication();
+
+        app.UseServerlessAuthorization();
+
+        app.UseServerlessEventHub();
+
+        app.UseEtlPackageManager(options => { options.RunEtlPackageManager = _appSettings?.RunEtlPackage ?? false; });
+
+        //if (_shouldSetupQueue)
+        //    app
+        //        .UseAwsSqsQueueProvider()
+        //        .SyncQueueTopicsSubscription();
+
+        app.UseWarmUpAdapters();
 
         app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
