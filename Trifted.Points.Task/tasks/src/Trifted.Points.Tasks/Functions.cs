@@ -2,6 +2,8 @@ using Amazon.Lambda.Annotations;
 using Amazon.Lambda.SQSEvents;
 using Kanject.Core.Queue.Provider.AwsSqs.Abstractions.Extensions;
 using Trifted.Points.Tasks.Config.Aws;
+using Trifted.Points.Tasks.Consumers;
+using Trifted.Points.Tasks.RouteConsumers.DefaultQueue;
 
 namespace Trifted.Points.Tasks;
 
@@ -11,39 +13,38 @@ namespace Trifted.Points.Tasks;
 public partial class Functions
 {
     /// <summary>
-    /// Process payment authorization
+    /// Processes SQS events related to Wdrbe quest consumption.
     /// </summary>
-    /// <param name="sqsEvent"></param>
+    /// <param name="sqsEvent">The SQS event containing the messages to be processed.</param>
+    /// <returns>A batch response indicating the result of processing the SQS messages.</returns>
     [LambdaFunction(
-        ResourceName = "SampleSqsTaskFunc",
+        ResourceName = "WdrbeQuestConsumerFunc",
         MemorySize = 1024,
         Timeout = 30,
         Policies = IamPolicyDefaults.FunctionPolicy,
-        PackageType = LambdaPackageType.Image
+        PackageType = LambdaPackageType.Zip
     )]
-    public Task<SQSBatchResponse> SampleSqsTaskAsync(SQSEvent sqsEvent)
+    public Task<SQSBatchResponse> WdrbeQuestConsumerFuncAsync(SQSEvent sqsEvent)
     {
         sqsEvent.PrintInConsole(); //log request payload
-        throw new NotImplementedException();
+        return ServiceProvider.ProcessWdrbeQuestEventAsync(sqsEvent);
     }
 
     /// <summary>
-    /// Process payment authorization
+    /// Routes SQS events to the Points Service Default Queue.
     /// </summary>
-    /// <param name="sqsEvent"></param>
+    /// <param name="sqsEvent">The SQS event containing the messages to be routed.</param>
+    /// <returns>A batch response indicating the result of processing the SQS messages.</returns>
     [LambdaFunction(
-        ResourceName = "SampleSqsRouteConsumerTaskFunc",
+        ResourceName = "PointsTaskRouterFunc",
         MemorySize = 1024,
         Timeout = 30,
         Policies = IamPolicyDefaults.FunctionPolicy,
-        PackageType = LambdaPackageType.Image
+        PackageType = LambdaPackageType.Zip
     )]
-    public Task<SQSBatchResponse> SampleSqsTaskRouterAsync(SQSEvent sqsEvent)
+    public Task<SQSBatchResponse> PointsTaskRouterAsync(SQSEvent sqsEvent)
     {
         sqsEvent.PrintInConsole(); //log request payload
-        return ServiceProvider.RouteIncomingSqsQueueEventAsync(
-            queue: "router-queue-name",
-            sqsEvent: sqsEvent
-        );
+        return ServiceProvider.RouteSqsEventToPointsSvcDefaultQueueAsync(sqsEvent);
     }
 }

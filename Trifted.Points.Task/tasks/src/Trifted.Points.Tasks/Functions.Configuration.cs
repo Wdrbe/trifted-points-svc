@@ -12,6 +12,7 @@ using Trifted.Core.Trifted.Points.Events;
 using Trifted.Points.Common.Constants;
 using Trifted.Points.Data.DbContexts;
 using Trifted.Points.Tasks.Consumers;
+using Trifted.Points.Tasks.RouteConsumers.DefaultQueue;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
@@ -156,7 +157,8 @@ public partial class Functions : CloudFunction
                 options.DlqMessageRetentionPeriod = 14;
                 options.CreateQueueIfNotExist = _appSettings.ShouldSetupQueue;
             })
-            .AddWdrbeQuestConsumer();
+            .AddWdrbeQuestConsumer()
+            .AddPointsSvcDefaultQueueEventHubQueueRouter();
 
         #endregion
     }

@@ -60,7 +60,8 @@ public partial class WdrbeQuestConsumer
                         throw new ApiValidationException("Unable to parse user identifier from message body");
                     }
 
-                    var response = await WdrbeQuestManagerService.ProcessUserPointAsync(userId: userId, questId: quest.QuestId, taskId: quest.Id);
+                    var response = await WdrbeQuestManagerService.ProcessUserPointAsync(userId: userId,
+                        questId: quest.QuestId, taskId: quest.Id);
 
                     response.PrintInConsole();
                 }
@@ -69,7 +70,7 @@ public partial class WdrbeQuestConsumer
             {
                 ex.PrintInConsole();
                 Response.BatchItemFailures.Add(new SQSBatchResponse.BatchItemFailure
-                { ItemIdentifier = messageContext.MessageId });
+                    { ItemIdentifier = messageContext.MessageId });
             }
         }
     }
