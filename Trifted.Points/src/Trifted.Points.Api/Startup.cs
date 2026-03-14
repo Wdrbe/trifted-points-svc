@@ -21,7 +21,10 @@ using Trifted.Points.Api.Configurations;
 using Trifted.Points.Common.Constants;
 using Trifted.Points.Data.DbContexts;
 using Kanject.Core.ApiV2.Extensions;
+using Kanject.ServerlessEventHub.Abstractions.Extensions;
+using Kanject.ServerlessEventHub.Scheduling.EventBridge.Extensions;
 using Trifted.Core.Trifted.Identity.Events.AccountManagement;
+using Trifted.Core.Trifted.Points.Events;
 using Trifted.Core.Trifted.Points.Queues;
 
 namespace Trifted.Points.Api;
@@ -145,14 +148,11 @@ public class Startup(IConfiguration configuration)
             });
         });
 
-        services.AddServerlessEventHubClient(
-            serviceName: TriftedPoints.ServiceName,
-            eventHubConfigurationOption: options =>
+        services.AddTriftedPointsSvcEventHubClient(eventHubConfigurationOption: options =>
             {
-                var configuration =
-                    Configuration.GetSection("EventHubClientConfiguration")
-                        .Get<AwsServerlessEventHubConfiguration>()
-                    ?? throw new Exception("EventHubClientConfiguration is required");
+                var configuration = Configuration.GetSection("EventHubClientConfiguration")
+                                        .Get<AwsServerlessEventHubConfiguration>()
+                                    ?? throw new Exception("'EventHubClientConfiguration' is required");
 
                 options.AwsAccessKey = _appSettings.AwsAccessKeyId;
                 options.AwsSecretKey = _appSettings.AwsAccessSecretKey;
@@ -160,7 +160,14 @@ public class Startup(IConfiguration configuration)
                 options.ServerlessEventHubSchemaName = configuration.ServerlessEventHubSchemaName;
                 options.ServerlessEventLogSchemaName = configuration.ServerlessEventLogSchemaName;
                 options.SyncEventTopics = configuration.SyncEventTopics;
-            });
+
+#if DEBUG
+                options.EnableSetup = configuration.EnableSetup;
+                options.EnableForceSync();
+#endif
+            },
+            use: option => option.UseEventBridgeScheduler()
+        );
 
         services.AddAwsSqsGlobalQueueConfiguration(options =>
         {
