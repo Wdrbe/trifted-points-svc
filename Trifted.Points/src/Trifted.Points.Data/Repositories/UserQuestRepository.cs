@@ -8,6 +8,4 @@ namespace Trifted.Points.Data.Repositories;
 [DbContext(typeof(TriftedPointsDbContext))]
 [EntityRepository<UserPointEntity>]
 [EntityRepository<UserQuestTaskEntity>]
-public partial class UserQuestRepository
-{
-}
+public partial class UserQuestRepository;

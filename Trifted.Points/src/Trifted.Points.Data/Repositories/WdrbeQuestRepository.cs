@@ -11,6 +11,4 @@ namespace Trifted.Points.Data.Repositories;
 [Repository(Entity = typeof(WdrbeQuestEntity), Version = 2)]
 [DbContext(typeof(TriftedPointsDbContext))]
 [EntityRepository<List<WdrbeQuestTaskEntity>>]
-public partial class WdrbeQuestRepository
-{
-}
+public partial class WdrbeQuestRepository;

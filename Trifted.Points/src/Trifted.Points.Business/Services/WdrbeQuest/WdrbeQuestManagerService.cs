@@ -6,7 +6,7 @@ using Kanject.Core.NoSqlDatabase.Provider.DynamoDbV2;
 using Kanject.Core.Queue.Abstractions.Interfaces;
 using Kanject.Core.SystemConsole.Extensions;
 using Kanject.ServerlessEventHub.Provider.AwsSns.Abstractions.DataStore;
-using Trifted.Core.Trifted.Identity.Queues;
+using Trifted.Core.Trifted.Points.Queues;
 using Trifted.Points.Business.Services.WdrbeQuest.Abstractions.Constants;
 using Trifted.Points.Business.Services.WdrbeQuest.Abstractions.Interfaces;
 using Trifted.Points.Business.Services.WdrbeQuest.Abstractions.Models;
@@ -95,6 +95,7 @@ public partial class WdrbeQuestManagerService(
         if (!succeeded)
             throw new ApiServiceException(WdrbeQuestManagerMessages.SystemCouldNotCreateQuest);
     }
+
     private async Task UnSubscribeEventTopicFromQuestQueue(List<QuestTaskSubscription> questTasks)
     {
         string[] questEventTopics = [.. questTasks.Select(task => task.EventTopic)];
