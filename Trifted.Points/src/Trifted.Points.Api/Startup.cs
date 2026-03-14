@@ -19,10 +19,10 @@ using Trifted.Core.Trifted.Points;
 using Trifted.Points.Api.Components.Filters;
 using Trifted.Points.Api.Configurations;
 using Trifted.Points.Common.Constants;
-using Trifted.Core.Trifted.Identity.Queues;
 using Trifted.Points.Data.DbContexts;
 using Kanject.Core.ApiV2.Extensions;
-
+using Trifted.Core.Trifted.Identity.Events.AccountManagement;
+using Trifted.Core.Trifted.Points.Queues;
 
 namespace Trifted.Points.Api;
 
@@ -47,7 +47,6 @@ public class Startup(IConfiguration configuration)
     {
         services.AddCors();
         services.AddEndpointsApiExplorer();
-
 
         var appSettingsConfig = Configuration.GetSection("AppSettings");
 
@@ -147,25 +146,21 @@ public class Startup(IConfiguration configuration)
         });
 
         services.AddServerlessEventHubClient(
-        serviceName: TriftedPoints.ServiceName,
-        eventHubConfigurationOption: options =>
-        {
-            var configuration =
-            Configuration.GetSection("EventHubClientConfiguration")
-                .Get<AwsServerlessEventHubConfiguration>()
-            ?? throw new Exception("EventHubClientConfiguration is required");
+            serviceName: TriftedPoints.ServiceName,
+            eventHubConfigurationOption: options =>
+            {
+                var configuration =
+                    Configuration.GetSection("EventHubClientConfiguration")
+                        .Get<AwsServerlessEventHubConfiguration>()
+                    ?? throw new Exception("EventHubClientConfiguration is required");
 
-            options.AwsAccessKey = _appSettings.AwsAccessKeyId;
-            options.AwsSecretKey = _appSettings.AwsAccessSecretKey;
-            options.AwsRegionEndpoint = _appSettings.AwsRegion;
-            options.ServerlessEventHubSchemaName = configuration.ServerlessEventHubSchemaName;
-            options.ServerlessEventLogSchemaName = configuration.ServerlessEventLogSchemaName;
-            options.SyncEventTopics = configuration.SyncEventTopics;
-
-        });
-
-
-
+                options.AwsAccessKey = _appSettings.AwsAccessKeyId;
+                options.AwsSecretKey = _appSettings.AwsAccessSecretKey;
+                options.AwsRegionEndpoint = _appSettings.AwsRegion;
+                options.ServerlessEventHubSchemaName = configuration.ServerlessEventHubSchemaName;
+                options.ServerlessEventLogSchemaName = configuration.ServerlessEventLogSchemaName;
+                options.SyncEventTopics = configuration.SyncEventTopics;
+            });
 
         services.AddAwsSqsGlobalQueueConfiguration(options =>
         {
@@ -176,20 +171,12 @@ public class Startup(IConfiguration configuration)
             options.UseDeadLetterQueue = true;
             options.DlqMessageRetentionPeriod = 14;
             options.CreateQueueIfNotExist = _appSettings.ShouldSetupQueue;
-        })
-        .AddWdrbeQuestQueue(option =>
-        {
-            option.Namespace = _appSettings.ConversationQueueNamespace;
-            option.CreateQueueIfNotExist = false;
-            option.MaximumReceiveMessageCount = 10;
         });
 
-
-
-        //if (_appSettings.ShouldSetupQueue)
-        //    services
-        //        .CreatePointsSvcDefaultEventQueue(options => { options.Namespace = string.Empty; })
-        //        .SubscribeMarketplaceSvcDefaultEventQueueTopics();
+        if (_appSettings.ShouldSetupQueue)
+            services
+                .CreatePointsSvcDefaultEventQueue(options => { options.Namespace = string.Empty; })
+                .CreateWdrbeQuestQueue(options => { options.Namespace = string.Empty; });
 
         services.AddControllers()
             .AddJsonOptions(options =>
@@ -221,6 +208,7 @@ public class Startup(IConfiguration configuration)
             app.UseDeveloperExceptionPage();
 
         app.UseCoreExceptionHandlerMiddleware();
+
         #region Swagger Configuration
 
         app.UseSwaggerUI(options =>
@@ -256,10 +244,10 @@ public class Startup(IConfiguration configuration)
 
         app.UseEtlPackageManager(options => { options.RunEtlPackageManager = _appSettings?.RunEtlPackage ?? false; });
 
-        //if (_shouldSetupQueue)
-        //    app
-        //        .UseAwsSqsQueueProvider()
-        //        .SyncQueueTopicsSubscription();
+        app.UseAwsSqsQueueProvider();
+
+        if (_shouldSetupQueue)
+            app.SyncQueueTopicsSubscription();
 
         app.UseWarmUpAdapters();
 
