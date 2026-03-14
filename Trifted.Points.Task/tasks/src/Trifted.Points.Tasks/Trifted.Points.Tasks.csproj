@@ -25,7 +25,7 @@
         <PackageReference Include="Amazon.Lambda.Core" Version="2.8.1" />
         <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.4.5" />
         <PackageReference Include="Amazon.Lambda.Annotations" Version="1.9.0" />
-        <PackageReference Include="Kanject.Core.CloudFunction.Provider.AwsLambda" Version="3.1.9" />
+        <PackageReference Include="Kanject.Core.CloudFunction.Provider.AwsLambda" Version="3.1.10" />
     </ItemGroup>
     <ItemGroup>
         <Content Update="appsettings.json">

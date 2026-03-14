@@ -19,7 +19,7 @@ public partial class WdrbeQuestConsumer
     protected override async Task ConsumeAsync(List<Message> messages)
     {
         var topics = messages.Select(message => message.MessageAttributes["EventTopic"].StringValue).ToArray();
-        var questTasks = await WdrbeQuestRepository.WdrbeQuestTask
+        var questTasks = await WdrbeQuestRepository.WdrbeQuestTasks
             .FindWdrbeQuestTasksByQuestEventTopicsAsync(topics);
 
         var questTasksLookup = questTasks.ToLookup(task => task.EventTopic);
@@ -29,7 +29,7 @@ public partial class WdrbeQuestConsumer
                 includes:
                 [
                     WdrbeQuest,
-                    WdrbeQuestTask
+                    WdrbeQuestTasks
                 ]))
             .ToLookup(quest => quest.WdrbeQuest!.Id);
 
